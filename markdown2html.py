@@ -20,7 +20,7 @@ if __name__ == "__main__":
     with open(sys.argv[1]) as f1, open(sys.argv[2], 'w') as f2:
         data = f1.readlines()
         for line in data:
-            line = line.split('\n')[0]
+            """line = line.split('\n')[0]"""
             words = line.split(' ')
             size = len(words[0])
             if words[0] == '#' * size :
