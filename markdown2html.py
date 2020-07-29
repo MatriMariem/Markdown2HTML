@@ -20,13 +20,13 @@ if __name__ == "__main__":
     with open(sys.argv[1]) as f1, open(sys.argv[2], 'w') as f2:
         data = f1.readlines()
         for line in data:
-            """line = line.split('\n')[0]"""
+            line = line.split('\n')[0]
             words = line.split(' ')
             size = len(words[0])
-            if words[0] == '#' * size :
-                open_tag = '<h' + str(size) + '>' + '\n'
-                close_tag = '</h' + str(size) + '>' + '\n'
-                html_line = open_tag + line[size + 1:] + close_tag
+            if words[0] == '#' * size and size in range(1, 7):
+                open_tag = '<h' + str(size) + '>'
+                close_tag = '</h' + str(size) + '>'
+                html_line = open_tag + line[size + 1:] + close_tag + '\n'
                 f2.write(html_line)
             else:
                 html.append(line)
