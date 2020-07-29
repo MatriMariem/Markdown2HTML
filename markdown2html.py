@@ -28,8 +28,8 @@ if __name__ == "__main__":
                 close_tag = '</h' + str(len(words[0])) + '>'
                 html_line = open_tag + ' '.join(words[1:]) + close_tag + '\n'
                 html.append(html_line)
-            else:
-                html.append(line)
+            """else:
+                html.append(line)"""
     try:
         with open(sys.argv[2], 'w') as f2:
             f2.writelines(html)
