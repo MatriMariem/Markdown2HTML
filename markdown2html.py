@@ -16,22 +16,16 @@ def handle_heading(line, words, size, f2):
         html_line = open_tag + line[size + 1:] + close_tag + '\n'
         f2.write(html_line)
 
-def open_list(unordered, list_started, f2):
-    """ write the opening ul tag if needed"""
+def open_list(list_type, list_started, f2):
+    """ write the opening list tag if needed"""
     if not list_started:
-        if unordered:
-            f2.write("<ul>\n")
-        else:
-            f2.write("<ol>\n")
+        f2.write("<{}>\n".format(list_type))
     return True
 
-def close_list(unordered, list_started, f2):
-    """ write the closing ul tag if needed"""
+def close_list(list_type, list_started, f2):
+    """ write the closing list tag if needed"""
     if list_started:
-        if unordered:
-            f2.write("</ul>\n")
-        else:
-            f2.write("</ol>\n")
+        f2.write("</{}>\n".format(list_type))
     return False
 
 
@@ -46,23 +40,31 @@ if __name__ == "__main__":
     with open(sys.argv[1]) as f1, open(sys.argv[2], 'w') as f2:
         data = f1.readlines()
         list_started = False
-        unordered = False
+        list_type = ''
         for line in data:
             line = line.split('\n')[0]
             words = line.split(' ')
             size = len(words[0])
             if size > 0 and words[0][0] == '#':
-                list_started = close_list(unordered, list_started, f2)
+                list_started = close_list(list_type, list_started, f2)
+                list_type = ''
                 handle_heading(line, words, size, f2)
             elif line[0:2] == "- " or line[0:2] == "* ":
                 if line[0:2] == "- ":
-                    unordered = True
+                    if list_type == 'ol':
+                        list_started = close_list(list_type, list_started, f2)
+                    list_type = 'ul'
                 else:
-                    unordered = False
-                list_started = open_list(unordered, list_started, f2)
+                    if list_type == 'ul':
+                        list_started = close_list(list_type, list_started, f2)
+                    list_type = 'ol'
+                list_started = open_list(list_type, list_started, f2)
                 html_line = "<li>" + line[2:] + "</li>\n"
                 f2.write(html_line)
+                if line + '\n' == data[-1]:
+                    list_started = close_list(list_type, list_started, f2)
             else:
-                list_started = close_list(unordered, list_started, f2)
+                list_started = close_list(list_type, list_started, f2)
+                list_type = ''
                 f2.write(line + '\n')
     exit(0)
