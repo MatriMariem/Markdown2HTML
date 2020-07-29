@@ -29,5 +29,5 @@ if __name__ == "__main__":
                 html_line = open_tag + line[size + 1:] + close_tag + '\n'
                 f2.write(html_line)
             else:
-                html.append(line)
+                f2.write(line + '\n')
     exit(0)
