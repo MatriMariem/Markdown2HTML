@@ -24,9 +24,9 @@ if __name__ == "__main__":
             words = line.split(' ')
             size = len(words[0])
             if words[0] == '#' * size :
-                open_tag = '<h' + str(size) + '>'
-                close_tag = '</h' + str(size) + '>'
-                html_line = open_tag + line[size + 1:] + close_tag + '\n'
+                open_tag = '<h' + str(size) + '>' + '\n'
+                close_tag = '</h' + str(size) + '>' + '\n'
+                html_line = open_tag + line[size + 1:] + close_tag
                 f2.write(html_line)
             else:
                 html.append(line)
