@@ -1,10 +1,4 @@
-<p>
 Hello
-</p>
-<br/>
 
-<p>
 I'm a text
-<br/>
 with 2 lines
-</p>
