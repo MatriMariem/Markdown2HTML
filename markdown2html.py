@@ -8,12 +8,21 @@ Second argument is the output file name
 import sys
 import os
 
+def check_line(line):
+    """ checks if a line contains bold syntax and write it """
+    if line[:2] == '**' and line[-2:] == '**':
+        return "<b>{}</b>".format(line[2:-2])
+    elif line[:2] == '__' and line[-2:] == '__':
+        return "<em>{}</em>".format(line[2:-2])
+    else:
+        return line
+
 def handle_heading(line, words, size, f2):
     """ A function that handles headings """
     if words[0] == '#' * size and size in range(1, 7):
         open_tag = '<h' + str(size) + '>'
         close_tag = '</h' + str(size) + '>'
-        html_line = open_tag + line[size + 1:] + close_tag + '\n'
+        html_line = open_tag + check_line(line[size + 1:]) + close_tag + '\n'
         f2.write(html_line)
 
 def open_list(list_type, list_started, f2):
@@ -59,7 +68,7 @@ if __name__ == "__main__":
                         list_started = close_list(list_type, list_started, f2)
                     list_type = 'ol'
                 list_started = open_list(list_type, list_started, f2)
-                html_line = "<li>" + line[2:] + "</li>\n"
+                html_line = "<li>" + check_line(line[2:]) + "</li>\n"
                 f2.write(html_line)
                 if line + '\n' == data[-1]:
                     list_started = close_list(list_type, list_started, f2)
@@ -75,7 +84,7 @@ if __name__ == "__main__":
                         f2.write("<p>\n")
                     else:
                         f2.write("<br/>\n")
-                    f2.write("{}\n".format(line))
+                    f2.write("{}\n".format(check_line(line)))
                     if line + '\n' == data[-1] or data[data.index(line + '\n') + 1] == '\n':
                         f2.write("</p>\n")
                     elif data[data.index(line + '\n') + 1][:2] in ('- ', '* ', '# '):
