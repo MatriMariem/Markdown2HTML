@@ -66,15 +66,18 @@ if __name__ == "__main__":
             else:
                 list_started = close_list(list_type, list_started, f2)
                 list_type = ''
-                if line + '\n' == data[0] or data[data.index(line + '\n') - 1] == '\n':
-                    f2.write("<p>\n")
-                elif data[data.index(line + '\n') - 1][:2] in ('- ', '* ', '# '):
-                    f2.write("<p>\n")
+                if line == '':
+                    pass
                 else:
-                    f2.write("<br/>\n")
-                f2.write("{}\n".format(line))
-                if line + '\n' == data[-1] or data[data.index(line + '\n') + 1] == '\n':
-                    f2.write("</p>\n")
-                elif data[data.index(line + '\n') + 1][:2] in ('- ', '* ', '# '):
-                    f2.write("</p>\n")
+                    if line + '\n' == data[0] or data[data.index(line + '\n') - 1] == '\n':
+                        f2.write("<p>\n")
+                    elif data[data.index(line + '\n') - 1][:2] in ('- ', '* ', '# ') and line != '':
+                        f2.write("<p>\n")
+                    else:
+                        f2.write("<br/>\n")
+                    f2.write("{}\n".format(line))
+                    if line + '\n' == data[-1] or data[data.index(line + '\n') + 1] == '\n':
+                        f2.write("</p>\n")
+                    elif data[data.index(line + '\n') + 1][:2] in ('- ', '* ', '# '):
+                        f2.write("</p>\n")
     exit(0)
