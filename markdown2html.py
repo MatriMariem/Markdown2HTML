@@ -10,12 +10,37 @@ import os
 
 def check_line(line):
     """ checks if a line contains bold syntax and write it """
-    if line[:2] == '**' and line[-2:] == '**':
-        return "<b>{}</b>".format(line[2:-2])
-    elif line[:2] == '__' and line[-2:] == '__':
-        return "<em>{}</em>".format(line[2:-2])
-    else:
-        return line
+    foundb1 = False
+    foundb2 = False
+    founde1 = False
+    founde2 = False
+    for i in range(len(line) - 2):
+        if line[i] + line[i + 1] == '**':
+            index1 = i
+            foundb1 = True
+            break
+    if foundb1:
+        for j in range(i + 2, len(line) - 1):
+            if line[j] + line[j + 1] == '**':
+                index2 = j
+                foundb2 = True
+                break
+    if foundb2:
+        line = line[:index1] + "<b>" + line[index1 + 2:index2] + "</b>" + line[index2+2:]
+    for i in range(len(line) - 2):
+        if line[i] + line[i + 1] == '__':
+            index1 = i
+            founde1 = True
+            break
+    if founde1:
+        for j in range(i + 2, len(line) - 1):
+            if line[j] + line[j + 1] == '__':
+                index2 = j
+                founde2 = True
+                break
+    if founde2:
+        line = line[:index1] + "<em>" + line[index1 + 2:index2] + "</em>" + line[index2+2:]
+    return line
 
 def handle_heading(line, words, size, f2):
     """ A function that handles headings """
