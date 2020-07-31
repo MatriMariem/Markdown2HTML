@@ -5,8 +5,9 @@ a script markdown2html.py that takes an argument 2 strings:
 First argument is the name of the Markdown file
 Second argument is the output file name
 """
-import sys
+import hashlib
 import os
+import sys
 
 def check_line(line):
     """ checks if a line contains bold syntax and write it """
@@ -14,6 +15,10 @@ def check_line(line):
     foundb2 = False
     founde1 = False
     founde2 = False
+    foundm1 = False
+    foundm2 = False
+    foundc1 = False
+    foundc2 = False
     for i in range(len(line) - 2):
         if line[i] + line[i + 1] == '**':
             index1 = i
@@ -40,6 +45,34 @@ def check_line(line):
                 break
     if founde2:
         line = line[:index1] + "<em>" + line[index1 + 2:index2] + "</em>" + line[index2+2:]
+    for i in range(len(line) - 2):
+        if line[i] + line[i + 1] == '[[':
+            index1 = i
+            foundm1 = True
+            break
+    if foundm1:
+        for j in range(i + 2, len(line) - 1):
+            if line[j] + line[j + 1] == ']]':
+                index2 = j
+                foundm2 = True
+                break
+    if foundm2:
+        line = line[:index1] + hashlib.md5(line[index1 + 2:index2].encode()).hexdigest() + line[index2+2:]
+    for i in range(len(line) - 2):
+        if line[i] + line[i + 1] == '((':
+            index1 = i
+            foundc1 = True
+            break
+    if foundc1:
+        for j in range(i + 2, len(line) - 1):
+            if line[j] + line[j + 1] == '))':
+                index2 = j
+                foundc2 = True
+                break
+    if foundc2:
+        token = line[index1 + 2:index2].replace("c", '')
+        token = token.replace('C', '')
+        line = line[:index1] + token + line[index2+2:]
     return line
 
 def handle_heading(line, words, size, f2):
