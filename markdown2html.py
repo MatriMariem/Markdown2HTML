@@ -91,7 +91,7 @@ def handle_list(data, line, f2):
 
 def handle_paragraph(data, line, f2):
     """ writes paragraths """
-    if line + '\n' == data[0] or data[data.index(line + '\n') - 1][:2] in ('- ', '* ', '# '):
+    if line + '\n' == data[0] or data[data.index(line + '\n') - 1][:2] in ('- ', '* ', '# ', '##'):
         f2.write("<p>\n")
     elif data[data.index(line + '\n') - 1] == '\n':
         f2.write("<p>\n")
