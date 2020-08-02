@@ -112,7 +112,13 @@ def handle_paragraph(data, line, f2):
 
 
 if __name__ == "__main__":
-    check_arguments()
+    if len(sys.argv) < 3:
+        sys.stderr.write("Usage: ./markdown2html.py README.md README.html\n")
+        exit(1)
+    elif not os.path.exists(sys.argv[1]):
+        error = "Missing " + sys.argv[1] + '\n'
+        sys.stderr.write(error)
+        exit(1)
     with open(sys.argv[1]) as f1, open(sys.argv[2], 'w') as f2:
         data = f1.readlines()
         for line in data:
