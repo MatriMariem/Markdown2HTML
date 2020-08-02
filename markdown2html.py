@@ -28,7 +28,9 @@ def check_line(line):
     if md5[0] is True:
         index1 = md5[1]
         index2 = md5[2]
-        line = line[:index1] + hashlib.md5(line[index1 + 2:index2].encode()).hexdigest() + line[index2+2:]
+        line = line[:index1]\
+            + hashlib.md5(line[index1 + 2:index2].encode()).hexdigest()\
+            + line[index2+2:]
     C = line_syntax(line, '((', '))', '', '', False)
     if C[0] is True:
         index1 = C[1]
@@ -56,7 +58,8 @@ def line_syntax(line, m_start, m_end, h_start, h_end, convert):
                 break
     if convert is True:
         if found2:
-            return line[:index1] + h_start + line[index1 + 2:index2] + h_end + line[index2+2:]
+            return line[:index1] + h_start\
+                    + line[index1 + 2:index2] + h_end + line[index2+2:]
         else:
             return line
     else:
@@ -81,17 +84,21 @@ def handle_list(data, line, f2):
         list_type = 'ul'
     elif line[0:2] == "* ":
         list_type = 'ol'
-    if line + '\n' == data[0] or len(data[data.index(line + '\n') - 1]) < 2 or data[data.index(line + '\n') - 1][:2] != line[:2]:
+    if (line + '\n' == data[0] or len(data[data.index(line + '\n') - 1]) < 2 or
+            data[data.index(line + '\n') - 1][:2] != line[:2]):
         f2.write("<{}>\n".format(list_type))
     html_line = "<li>" + check_line(line[2:]) + "</li>\n"
     f2.write(html_line)
-    if line + '\n' == data[-1] or len(data[data.index(line + '\n') + 1]) < 2 or data[data.index(line + '\n') + 1][:2] != line[:2]:
+    if (line + '\n' == data[-1] or
+            len(data[data.index(line + '\n') + 1]) < 2 or
+            data[data.index(line + '\n') + 1][:2] != line[:2]):
         f2.write("</{}>\n".format(list_type))
 
 
 def handle_paragraph(data, line, f2):
     """ writes paragraths """
-    if line + '\n' == data[0] or data[data.index(line + '\n') - 1][:2] in ('- ', '* ', '# ', '##'):
+    if (line + '\n' == data[0] or
+            data[data.index(line + '\n') - 1][:2] in ('- ', '* ', '# ')):
         f2.write("<p>\n")
     elif data[data.index(line + '\n') - 1] == '\n':
         f2.write("<p>\n")
@@ -100,7 +107,7 @@ def handle_paragraph(data, line, f2):
     f2.write("{}\n".format(check_line(line)))
     if line + '\n' == data[-1] or data[data.index(line + '\n') + 1] == '\n':
         f2.write("</p>\n")
-    elif data[data.index(line + '\n') + 1][:2] in ('- ', '* ', '# '):
+    elif data[data.index(line + '\n') + 1][:2] in ('- ', '* ', '# ', '##'):
         f2.write("</p>\n")
 
 
