@@ -123,8 +123,9 @@ if __name__ == "__main__":
                 handle_heading(line, words, size, f2)
             elif line[0:2] == "- " or line[0:2] == "* ":
                 handle_list(data, line, f2)
-            elif line == '':
-                f2.write('\n')
+            """elif line == '':
+                f2.write('\n')"""
             else:
-                handle_paragraph(data, line, f2)
+                """handle_paragraph(data, line, f2)"""
+                f2.write(line + '\n')
     exit(0)
