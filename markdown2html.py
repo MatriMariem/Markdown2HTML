@@ -79,7 +79,7 @@ def handle_list(data, line, f2):
     """ writes list items + opening and closing list tags """
     if line[0:2] == "- ":
         list_type = 'ul'
-    else if line[0:2] == "* ":
+    elif line[0:2] == "* ":
         list_type = 'ol'
     if line + '\n' == data[0] or len(data[data.index(line + '\n') - 1]) < 2 or data[data.index(line + '\n') - 1][:2] != line[:2]:
         f2.write("<{}>\n".format(list_type))
